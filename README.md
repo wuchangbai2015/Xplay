@@ -9,14 +9,14 @@
 
 一.编解码过程
 
-	1. 注册所有容器格式和CODEC:av_register_all()
+	1. 注册所有容器格式和CODEC:av_register_all()   参考链接：http://mp.toutiao.com/preview_article/?pgc_id=6667895765584577028
 
 	2. 打开文件:avformat_open_input()
 
-　　3. 从文件中提取流信息:av_find_stream_info()
-
-　　4. 穷举所有的流，查找其中种类为CODEC_TYPE_VIDEO
-
+	3. 从文件中提取流信息:av_find_stream_info()
+	
+	4. 穷举所有的流，查找其中种类为CODEC_TYPE_VIDEO
+	
 　　5. 查找对应的解码器:avcodec_find_decoder()
 
 　　6. 打开编解码器:avcodec_open()

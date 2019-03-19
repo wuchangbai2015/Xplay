@@ -1,25 +1,86 @@
-<UI version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>XplayClass</class>
- <widget class="QWidget" name="XplayClass" >
-  <property name="objectName" >
-   <string notr="true">XplayClass</string>
+ <widget class="QWidget" name="XplayClass">
+  <property name="enabled">
+   <bool>true</bool>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
-	<x>0</x>
-	<y>0</y>
-	<width>600</width>
-	<height>400</height>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="maximumSize">
+   <size>
+    <width>600</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="windowTitle">
    <string>Xplay</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="xplay.qrc">
+    <normaloff>:/Xplay/Resources/ooopic_1552920168.ico</normaloff>:/Xplay/Resources/ooopic_1552920168.ico</iconset>
+  </property>
+  <widget class="VideoWidget" name="openGLWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>400</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="openButton">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>300</y>
+     <width>51</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton:!hover{border-image: url(:/Xplay/Resources/ooopic_1552920567.png);}
+QPushButton:hover{border-image: url(:/Xplay/Resources/ooopic_1552920542.png);}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="playButton">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>310</y>
+     <width>51</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton:!hover{border-image: url(:/Xplay/Resources/ooopic_1552921240.png);}
+QPushButton:hover{border-image: url(:/Xplay/Resources/ooopic_1552920333.png);}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>VideoWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>videowidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-   <include location="xplay.qrc"/>
+  <include location="xplay.qrc"/>
  </resources>
  <connections/>
-</UI>
+</ui>

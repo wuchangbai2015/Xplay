@@ -114,8 +114,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="VideoWidget.cpp" />
     <ClCompile Include="XFFmpeg.cpp" />
     <ClCompile Include="xplay.cpp" />
+    <ClCompile Include="XVideoThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="xplay.h" />
@@ -127,7 +129,16 @@
     <QtRcc Include="xplay.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="VideoWidget.h" />
     <ClInclude Include="XFFmpeg.h" />
+    <ClInclude Include="XVideoThread.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Xplay.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\ooopic_1552920168.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

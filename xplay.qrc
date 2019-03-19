@@ -1,4 +1,11 @@
 <RCC>
-    <qresource prefix="Xplay">
-    </qresource>
+  <qresource prefix="Xplay">
+    <file>Resources/ooopic_1552920168.ico</file>
+    <file>Resources/ooopic_1552920333.png</file>
+    <file>Resources/ooopic_1552920403.png</file>
+    <file>Resources/ooopic_1552920513.png</file>
+    <file>Resources/ooopic_1552920542.png</file>
+    <file>Resources/ooopic_1552920567.png</file>
+    <file>Resources/ooopic_1552921240.png</file>
+  </qresource>
 </RCC>

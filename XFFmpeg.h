@@ -23,10 +23,11 @@ public:
 	void Close();
 	string GetError();
 	int	 totalMs = 0;
+	int fps = 0;
 	AVPacket Read();// ∂¡»° ”∆µ
 
 	AVFrame *Decode(const AVPacket *pkt);
-	bool ToRGB(const AVFrame *yuv, char *out, int outwidth, int outheight);
+	bool ToRGB(char *out, int outwidth, int outheight);
 
 	virtual ~XFFmpeg();
 	int videoStream = 0;

@@ -16,42 +16,45 @@ f9 可设置断点
 ***************************************************************/
 int main(int argc, char *argv[])
 {
-	if (XFFmpeg::Get()->Open("video.mp4"))
-	{
-		printf("open success!\n");
-	}
-	else
-	{
-		printf("open faild!%s",XFFmpeg::Get()->GetError().c_str());
-	}
+	//if (XFFmpeg::Get()->Open("video.mp4"))
+	//{
+	//	printf("open success!\n");
+	//}
+	//else
+	//{
+	//	printf("open faild!%s",XFFmpeg::Get()->GetError().c_str());
+	//}
 
-	char *rgb = new char[800*600*4];
-	for (;;)
-	{
-		AVPacket pkt = XFFmpeg::Get()->Read();
-		if (pkt.size == 0)
-		{	
-			break;
-		}
-		printf("pts = %lld\n",pkt.dts);
+	//char *rgb = new char[800*600*4];
+	//for (;;)
+	//{
+	//	AVPacket pkt = XFFmpeg::Get()->Read();
+	//	if (pkt.size == 0)
+	//	{	
+	//		break;
+	//	}
+	//	printf("pts = %lld\n",pkt.dts);
 
-		if (pkt.stream_index != XFFmpeg::Get()->videoStream)
-		{
-			av_packet_unref(&pkt);
-			continue;
-		}
+	//	if (pkt.stream_index != XFFmpeg::Get()->videoStream)
+	//	{
+	//		av_packet_unref(&pkt);
+	//		continue;
+	//	}
 
-		AVFrame *yuv = XFFmpeg::Get()->Decode(&pkt);
-		if (yuv)
-		{
-			printf("[D]");
-			XFFmpeg::Get()->ToRGB(yuv, rgb, 800, 600);
-		}
+	//	AVFrame *yuv = XFFmpeg::Get()->Decode(&pkt);
+	//	if (yuv)
+	//	{
+	//		printf("[D]");
+	//		XFFmpeg::Get()->ToRGB(yuv, rgb, 800, 600);
+	//	}
 
-		
+	//	
 
-		av_packet_unref(&pkt);// 释放
-	}
+	//	av_packet_unref(&pkt);// 释放
+	//}
+
+
+
 
 
 	//char *path = "video.mp4";      //设置路径   这个视频是放在我的bin目录下面的 

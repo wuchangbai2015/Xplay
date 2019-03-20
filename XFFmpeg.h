@@ -19,11 +19,12 @@ public:
 		return &ff;
 	}
 
-	bool Open(const char *path);
+	int Open(const char *path);
 	void Close();
 	string GetError();
 	int	 totalMs = 0;
 	int fps = 0;
+	int pts = 0; // 获取当前的播放时间
 	AVPacket Read();// 读取视频
 
 	AVFrame *Decode(const AVPacket *pkt);

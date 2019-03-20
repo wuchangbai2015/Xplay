@@ -9,6 +9,13 @@ class Xplay : public QWidget
 
 public:
 	Xplay(QWidget *parent = Q_NULLPTR);
+	void timerEvent(QTimerEvent *e);
+
+public slots:
+	void open();
+
+
+
 
 private:
 	Ui::XplayClass ui;

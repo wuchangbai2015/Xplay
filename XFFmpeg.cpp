@@ -11,7 +11,7 @@ static double r2d(AVRational r)
 	return r.num == 0 || r.den == 0 ? 0. : (double)r.num / (double)r.den;
 }
 
-bool XFFmpeg::Open(const char *path)
+int XFFmpeg::Open(const char *path)
 {
 	Close();
 	mutex.lock();
@@ -21,7 +21,7 @@ bool XFFmpeg::Open(const char *path)
 		mutex.unlock();
 		av_strerror(re, errorbuf, sizeof(errorbuf)); // 输出错误的信息
 		printf("open %s failed: %s\n", path, errorbuf);
-		return false;
+		return 0;
 	}
 	// 获取视频的时长 单位s
 	int totalMs = (ic->duration / AV_TIME_BASE *1000);
@@ -41,7 +41,7 @@ bool XFFmpeg::Open(const char *path)
 			{
 				mutex.unlock();
 				printf("video code not find!\n");
-				return false;
+				return 0;
 			}
 			int err = avcodec_open2(enc, codec, NULL);// 打开这个解码器
 			if (err != 0)
@@ -50,13 +50,13 @@ bool XFFmpeg::Open(const char *path)
 				char buf[1024] = { 0 };
 				av_strerror(err, buf, sizeof(buf));
 				printf(buf);
-				return false;
+				return 0;
 			}
 			printf("open codec success!\n");
 		}
 	}
 	mutex.unlock();
-	return true;
+	return totalMs;
 }
 void XFFmpeg::Close()
 {
@@ -123,6 +123,7 @@ AVFrame *XFFmpeg::Decode(const AVPacket *pkt)
 		return NULL;
 	}
 	mutex.unlock();
+	pts = (yuv->pts *r2d(ic->streams[pkt->stream_index]->time_base))*1000;// 获取当前播放的位置
 	return yuv;
 
 }

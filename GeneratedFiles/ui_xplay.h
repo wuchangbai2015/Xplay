@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include "videowidget.h"
@@ -26,6 +27,9 @@ public:
     VideoWidget *openGLWidget;
     QPushButton *openButton;
     QPushButton *playButton;
+    QLabel *totalTime;
+    QLabel *playTime;
+    QLabel *sp;
 
     void setupUi(QWidget *XplayClass)
     {
@@ -42,16 +46,38 @@ public:
         openGLWidget->setGeometry(QRect(0, 0, 600, 400));
         openButton = new QPushButton(XplayClass);
         openButton->setObjectName(QStringLiteral("openButton"));
-        openButton->setGeometry(QRect(210, 300, 51, 51));
+        openButton->setGeometry(QRect(540, 270, 51, 51));
         openButton->setStyleSheet(QLatin1String("QPushButton:!hover{border-image: url(:/Xplay/Resources/ooopic_1552920567.png);}\n"
 "QPushButton:hover{border-image: url(:/Xplay/Resources/ooopic_1552920542.png);}"));
         playButton = new QPushButton(XplayClass);
         playButton->setObjectName(QStringLiteral("playButton"));
-        playButton->setGeometry(QRect(330, 310, 51, 43));
+        playButton->setGeometry(QRect(540, 340, 51, 43));
         playButton->setStyleSheet(QLatin1String("QPushButton:!hover{border-image: url(:/Xplay/Resources/ooopic_1552921240.png);}\n"
 "QPushButton:hover{border-image: url(:/Xplay/Resources/ooopic_1552920333.png);}"));
+        totalTime = new QLabel(XplayClass);
+        totalTime->setObjectName(QStringLiteral("totalTime"));
+        totalTime->setGeometry(QRect(100, 370, 61, 16));
+        totalTime->setStyleSheet(QString::fromUtf8("\n"
+"\n"
+"color: rgb(255, 255, 255);\n"
+"\n"
+"font: 12pt \"\351\273\221\344\275\223\";"));
+        playTime = new QLabel(XplayClass);
+        playTime->setObjectName(QStringLiteral("playTime"));
+        playTime->setGeometry(QRect(40, 370, 61, 16));
+        playTime->setStyleSheet(QString::fromUtf8("\n"
+"\n"
+"color: rgb(255, 255, 255);\n"
+"\n"
+"font: 12pt \"\351\273\221\344\275\223\";"));
+        sp = new QLabel(XplayClass);
+        sp->setObjectName(QStringLiteral("sp"));
+        sp->setGeometry(QRect(90, 370, 16, 16));
+        sp->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
+"font: 14pt \"\351\273\221\344\275\223\";"));
 
         retranslateUi(XplayClass);
+        QObject::connect(openButton, SIGNAL(clicked()), XplayClass, SLOT(open()));
 
         QMetaObject::connectSlotsByName(XplayClass);
     } // setupUi
@@ -61,6 +87,9 @@ public:
         XplayClass->setWindowTitle(QApplication::translate("XplayClass", "Xplay", Q_NULLPTR));
         openButton->setText(QString());
         playButton->setText(QString());
+        totalTime->setText(QApplication::translate("XplayClass", "000:00", Q_NULLPTR));
+        playTime->setText(QApplication::translate("XplayClass", "000:00", Q_NULLPTR));
+        sp->setText(QApplication::translate("XplayClass", "/", Q_NULLPTR));
     } // retranslateUi
 
 };

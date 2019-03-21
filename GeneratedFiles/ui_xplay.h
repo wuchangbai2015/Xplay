@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QWidget>
 #include "videowidget.h"
 
@@ -30,6 +31,7 @@ public:
     QLabel *totalTime;
     QLabel *playTime;
     QLabel *sp;
+    QSlider *playSlider;
 
     void setupUi(QWidget *XplayClass)
     {
@@ -46,12 +48,12 @@ public:
         openGLWidget->setGeometry(QRect(0, 0, 600, 400));
         openButton = new QPushButton(XplayClass);
         openButton->setObjectName(QStringLiteral("openButton"));
-        openButton->setGeometry(QRect(540, 270, 51, 51));
+        openButton->setGeometry(QRect(490, 350, 51, 41));
         openButton->setStyleSheet(QLatin1String("QPushButton:!hover{border-image: url(:/Xplay/Resources/ooopic_1552920567.png);}\n"
 "QPushButton:hover{border-image: url(:/Xplay/Resources/ooopic_1552920542.png);}"));
         playButton = new QPushButton(XplayClass);
         playButton->setObjectName(QStringLiteral("playButton"));
-        playButton->setGeometry(QRect(540, 340, 51, 43));
+        playButton->setGeometry(QRect(540, 352, 51, 41));
         playButton->setStyleSheet(QLatin1String("QPushButton:!hover{border-image: url(:/Xplay/Resources/ooopic_1552921240.png);}\n"
 "QPushButton:hover{border-image: url(:/Xplay/Resources/ooopic_1552920333.png);}"));
         totalTime = new QLabel(XplayClass);
@@ -75,6 +77,12 @@ public:
         sp->setGeometry(QRect(90, 370, 16, 16));
         sp->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "font: 14pt \"\351\273\221\344\275\223\";"));
+        playSlider = new QSlider(XplayClass);
+        playSlider->setObjectName(QStringLiteral("playSlider"));
+        playSlider->setGeometry(QRect(20, 340, 561, 22));
+        playSlider->setMaximum(999);
+        playSlider->setPageStep(100);
+        playSlider->setOrientation(Qt::Horizontal);
 
         retranslateUi(XplayClass);
         QObject::connect(openButton, SIGNAL(clicked()), XplayClass, SLOT(open()));

@@ -12,6 +12,7 @@ Xplay::Xplay(QWidget *parent)
 
 void Xplay::open()
 {
+	// 打开文件找到视频
 	QString name = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("选择视频文件")); 
 	if (name.isEmpty())
 	{
@@ -25,21 +26,31 @@ void Xplay::open()
 		return;
 	}
 
+	// 显示总时间
 	char buf[1024] = {0};
 	int min = (totalMs / 1000) / 60;
 	int sec = (totalMs / 1000) % 60;
 	sprintf(buf, "%03d:%02d", min, sec);
-
 	ui.totalTime->setText(buf);
+
+
 }
 
 void Xplay::timerEvent(QTimerEvent *e)
 {
+	// 播放的时间
 	int min = (XFFmpeg::Get()->pts / 1000) / 60;
 	int sec = (XFFmpeg::Get()->pts / 1000) % 60;
 	char buf[1024] = {0};
 	sprintf(buf, "%03d:%02d", min, sec);
 	ui.playTime->setText(buf);
+
+	// 进度条
+	if (XFFmpeg::Get()->totalMs > 0)
+	{
+		float rate = ((float)XFFmpeg::Get()->pts) / ((float)XFFmpeg::Get()->totalMs);
+		ui.playSlider->setValue(rate * 1000);
+	}
 }
 
 

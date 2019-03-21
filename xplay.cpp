@@ -2,6 +2,8 @@
 #include <QFileDialog>
 #include "XFFmpeg.h"
 #include <QMessageBox>
+//#include <iostream>
+//using namespace std;
 
 Xplay::Xplay(QWidget *parent)
 	: QWidget(parent)
@@ -32,6 +34,7 @@ void Xplay::open()
 	int sec = (totalMs / 1000) % 60;
 	sprintf(buf, "%03d:%02d", min, sec);
 	ui.totalTime->setText(buf);
+	XFFmpeg::Get()->totalMs = totalMs;
 
 
 }
@@ -45,9 +48,14 @@ void Xplay::timerEvent(QTimerEvent *e)
 	sprintf(buf, "%03d:%02d", min, sec);
 	ui.playTime->setText(buf);
 
+	//cout << "pts--------->" << XFFmpeg::Get()->pts << endl;
+	//cout << "total------->" << XFFmpeg::Get()->totalMs << endl;
+
 	// ½ø¶ÈÌõ
 	if (XFFmpeg::Get()->totalMs > 0)
 	{
+
+
 		float rate = ((float)XFFmpeg::Get()->pts) / ((float)XFFmpeg::Get()->totalMs);
 		ui.playSlider->setValue(rate * 1000);
 	}

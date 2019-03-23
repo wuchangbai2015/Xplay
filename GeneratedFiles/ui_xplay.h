@@ -39,7 +39,6 @@ public:
             XplayClass->setObjectName(QStringLiteral("XplayClass"));
         XplayClass->setEnabled(true);
         XplayClass->resize(600, 400);
-        XplayClass->setMaximumSize(QSize(600, 400));
         QIcon icon;
         icon.addFile(QStringLiteral(":/Xplay/Resources/ooopic_1552920168.ico"), QSize(), QIcon::Normal, QIcon::Off);
         XplayClass->setWindowIcon(icon);
@@ -80,12 +79,16 @@ public:
         playSlider = new QSlider(XplayClass);
         playSlider->setObjectName(QStringLiteral("playSlider"));
         playSlider->setGeometry(QRect(20, 340, 561, 22));
+        playSlider->setStyleSheet(QStringLiteral("font: 7pt \"Arial\";"));
         playSlider->setMaximum(999);
         playSlider->setPageStep(100);
         playSlider->setOrientation(Qt::Horizontal);
 
         retranslateUi(XplayClass);
         QObject::connect(openButton, SIGNAL(clicked()), XplayClass, SLOT(open()));
+        QObject::connect(playSlider, SIGNAL(sliderPressed()), XplayClass, SLOT(sliderPress()));
+        QObject::connect(playSlider, SIGNAL(sliderReleased()), XplayClass, SLOT(sliderRelease()));
+        QObject::connect(playButton, SIGNAL(clicked()), XplayClass, SLOT(play()));
 
         QMetaObject::connectSlotsByName(XplayClass);
     } // setupUi

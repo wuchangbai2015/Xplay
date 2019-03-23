@@ -5,6 +5,12 @@
 //#include <iostream>
 //using namespace std;
 
+static bool isPressSlider = false; //静态的全局变量只能在该cpp文件中被访问到 
+static bool isPlay = true;
+
+#define PAUSE "QPushButton{border-image: url(:/Xplay/Resources/ooopic_1552920403.png);}"
+#define PLAY "QPushButton{border-image: url(:/Xplay/Resources/ooopic_1552921240.png);}"
+
 Xplay::Xplay(QWidget *parent)
 	: QWidget(parent)
 {
@@ -34,7 +40,10 @@ void Xplay::open()
 	int sec = (totalMs / 1000) % 60;
 	sprintf(buf, "%03d:%02d", min, sec);
 	ui.totalTime->setText(buf);
+
 	XFFmpeg::Get()->totalMs = totalMs;
+	isPlay = false;
+	play();
 
 
 }
@@ -48,17 +57,54 @@ void Xplay::timerEvent(QTimerEvent *e)
 	sprintf(buf, "%03d:%02d", min, sec);
 	ui.playTime->setText(buf);
 
+
+
 	//cout << "pts--------->" << XFFmpeg::Get()->pts << endl;
 	//cout << "total------->" << XFFmpeg::Get()->totalMs << endl;
 
 	// 进度条
 	if (XFFmpeg::Get()->totalMs > 0)
 	{
-
-
 		float rate = ((float)XFFmpeg::Get()->pts) / ((float)XFFmpeg::Get()->totalMs);
-		ui.playSlider->setValue(rate * 1000);
+		
+		// 精度条被按下就不能自己去刷进度了，只有在没有被按下的时候才能自己显示进度
+		if (!isPressSlider)
+		{
+			ui.playSlider->setValue(rate * 1000);
+		}
+		
 	}
+}
+
+void Xplay::sliderPress()
+{
+	isPressSlider = true;
+}
+
+void Xplay::sliderRelease()
+{
+	isPressSlider = false;
+	float pos = 0;
+	pos = (float)ui.playSlider->value() / (float)(ui.playSlider->maximum()+1);
+	XFFmpeg::Get()->Seek(pos);
+
+}
+
+void Xplay::play() // 暂停按钮的槽
+{
+	isPlay = !isPlay;
+	XFFmpeg::Get()->isPlay = isPlay;
+	if (isPlay)
+	{
+		//Pause
+		ui.playButton->setStyleSheet(PAUSE);
+	}
+	else
+	{
+		ui.playButton->setStyleSheet(PLAY);
+	}
+
+
 }
 
 

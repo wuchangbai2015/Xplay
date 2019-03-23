@@ -127,6 +127,30 @@ AVFrame *XFFmpeg::Decode(const AVPacket *pkt)
 	return yuv;
 
 }
+
+bool XFFmpeg::Seek(float pos) // 拖动进度条
+{
+	mutex.lock();
+	if (!ic)
+	{
+		mutex.unlock();
+		return false;
+	}
+	int64_t stamp = 0;
+	// streams 存放的视频流  videoStream 存放的视频流的索引 
+	stamp = pos * ic->streams[videoStream]->duration;
+	int re = av_seek_frame(ic, videoStream, stamp, AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME);
+	avcodec_flush_buffers(ic->streams[videoStream]->codec);
+
+	pts = (stamp *r2d(ic->streams[videoStream]->time_base)) * 1000;// 获取当前播放的位置
+	
+	mutex.unlock();
+	if (re >= 0)
+		return true;
+	return false;
+
+}
+
 bool XFFmpeg::ToRGB(char *out, int outwidth, int outheight)
 {
 	mutex.lock();

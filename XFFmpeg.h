@@ -30,8 +30,12 @@ public:
 	AVFrame *Decode(const AVPacket *pkt);
 	bool ToRGB(char *out, int outwidth, int outheight);
 
+	bool Seek(float pos);// pos 0~1   拉动拖动条的
+
 	virtual ~XFFmpeg();
 	int videoStream = 0;
+
+	bool isPlay = false;
 
 protected:
 	char errorbuf[1024];

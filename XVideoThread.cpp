@@ -11,6 +11,13 @@ void XVideoThread::run()
 {
 	while (!isexit)
 	{
+	   // 拖动进度条的，要是暂停状态 就sleep
+		if (!XFFmpeg::Get()->isPlay)
+		{
+			msleep(10);
+			continue;
+		}
+
 		AVPacket pkt = XFFmpeg::Get()->Read();
 		if (pkt.size <= 0)
 		{

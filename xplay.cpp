@@ -107,6 +107,22 @@ void Xplay::play() // 暂停按钮的槽
 
 }
 
+void Xplay::resizeEvent(QResizeEvent *e)
+{
+	// 视频窗口发生变化的时候，主窗口也跟着视频窗口发生变化
+	ui.openGLWidget->resize(size()); // 这样的话 窗口会宕机的，原因申请的内存不够的
+	// 视屏窗口可以移动的，现在来设置怎么移动对应的其他组件
+	ui.playButton->move(this->width()/2 + 50, this->height() - 40);
+	ui.openButton->move(this->width() / 2 - 50, this->height() - 40);
+	ui.playSlider->move(25, this->height() - 50);
+	ui.playSlider->resize(this->width() - 50, ui.playSlider->height());
+	ui.playTime->move(25, ui.playButton->y() + 12);
+	ui.sp->move(ui.playTime->x()-20 + ui.playTime->width() + 5, ui.playTime->y());
+	ui.totalTime->move(80, ui.playButton->y() + 12);
+
+
+}
+
 
 
 

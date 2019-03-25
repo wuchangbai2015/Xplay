@@ -20,6 +20,22 @@ VideoWidget::~VideoWidget()
 void VideoWidget::paintEvent(QPaintEvent *e)
 {
 	static QImage *image = NULL;
+	// 视频窗口随着主窗口变化 内存的变化的处理
+	static int w = 0;
+	static int h = 0;
+	if (w != width() || h != height())
+	{
+		if (image)
+		{
+			delete image->bits(); //删除内部的空间
+			delete image;
+			image = NULL;
+		}
+
+	}
+
+
+
 	if (image == NULL)
 	{
 		uchar *buf = new uchar[width()*height() * 4];

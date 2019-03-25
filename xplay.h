@@ -11,6 +11,9 @@ public:
 	Xplay(QWidget *parent = Q_NULLPTR);
 	void timerEvent(QTimerEvent *e);
 
+	// 重构控制窗口大小的函数
+	void resizeEvent(QResizeEvent *e);
+
 
 
 public slots:

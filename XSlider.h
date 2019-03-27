@@ -3,6 +3,7 @@
 #pragma once
 #include <qslider.h>
 
+// 把这个类做成一个接口类  不去提供实现
 class XSlider : public QSlider // 共有继承他本身的那个类
 {
 		Q_OBJECT //  qt的头文件都需要添加这个做一个处理

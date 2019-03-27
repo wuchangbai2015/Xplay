@@ -1,8 +1,10 @@
 //qt的头文件
 #include "xplay.h"
 #include <QtWidgets/QApplication>
-
 #include "XFFmpeg.h"
+
+// 音频
+#include <QAudioOutput> // 播放
 
 //c++的头文件
 #include <iostream>
@@ -16,6 +18,21 @@ f9 可设置断点
 ***************************************************************/
 int main(int argc, char *argv[])
 {
+
+	//QAudioOutput *out; // 播放
+	//QAudioFormat fmt;  // 输出的格式
+	//// 有48000个样本 每个样本是16位的  有2个这样的样本
+	//fmt.setSampleRate(48000);     // 1s钟采集了48000个音频 理论上越高越好
+	//fmt.setSampleRate(16);        // 16位即65535
+	//fmt.setChannelCount(2);       // 声道   双声道
+	//fmt.setCodec("audio/pcm");    // 格式   固定
+	//fmt.setByteOrder(QAudioFormat::LittleEndian);    // 数据的小结尾    数据的次序  默认
+	//fmt.setSampleType(QAudioFormat::UnSignedInt);    // 用什么数据来存的   默认
+	//// 创建一个输出流 打开音频输出
+	//out = new QAudioOutput(fmt);
+	//QIODevice *ad = out->start(); // 播放
+
+
 	//if (XFFmpeg::Get()->Open("video.mp4"))
 	//{
 	//	printf("open success!\n");

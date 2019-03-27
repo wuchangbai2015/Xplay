@@ -5,6 +5,8 @@
 #pragma comment(lib, "avcodec.lib") // 编码格式
 #pragma comment(lib, "swscale.lib") // YUV转RGB
 
+#pragma comment(lib, "swresample.lib") // 音频重采样的库文件
+
 
 static double r2d(AVRational r)
 {
@@ -54,6 +56,31 @@ int XFFmpeg::Open(const char *path)
 			}
 			printf("open codec success!\n");
 		}
+		else if (enc->codec_type == AVMEDIA_TYPE_AUDIO) // 判断是不是一个音频流
+		{
+			audioStream = i;
+			AVCodec *codec = avcodec_find_decoder(enc->codec_id);
+			if (avcodec_open2(enc, codec, NULL) < 0)
+			{
+				mutex.unlock();
+				return false;
+			}
+			this->sampleRate = enc->sample_rate;
+			this->channelCount = enc->channels;
+			switch ((enc->sample_fmt))
+			{
+			case AV_SAMPLE_FMT_S16:  // 16bit
+				this->sampleSize = 16;
+				break;
+			case AV_SAMPLE_FMT_S32:  // 16bit
+				this->sampleSize = 32;
+				break;
+			default:
+				break;
+			}
+			printf("audio sample rate:%d sample size:%d chanle:%d\n", this->sampleRate, this->sampleSize, this->channelCount);
+
+		}
 	}
 	mutex.unlock();
 	return totalMs;
@@ -67,6 +94,10 @@ void XFFmpeg::Close()
 	{
 		sws_freeContext(cCtx);
 		cCtx = NULL;
+	}
+	if (aCtx)
+	{
+		swr_free(&aCtx);
 	}
 	mutex.unlock();
 }
@@ -98,7 +129,7 @@ AVPacket XFFmpeg::Read()// 读取视频
 	return pkt;
 }
 
-AVFrame *XFFmpeg::Decode(const AVPacket *pkt)
+int XFFmpeg::Decode(const AVPacket *pkt)
 {
 	mutex.lock();
 	if (!ic)
@@ -110,21 +141,37 @@ AVFrame *XFFmpeg::Decode(const AVPacket *pkt)
 	{	
 		yuv = av_frame_alloc();
 	}
+
+	if (pcm == NULL)
+	{
+		pcm = av_frame_alloc();
+	}
+
+	AVFrame *frame = yuv;
+	if (pkt->stream_index == audioStream)// 判断要是音频 我们就将解码后的数据存放在pcm中  视频的就存放在yuv中
+	{
+		frame = pcm;
+	}
 	int re = avcodec_send_packet(ic->streams[pkt->stream_index]->codec, pkt);
 	if (re != 0)
 	{
 		mutex.unlock();
 		return NULL;
 	}
-	re = avcodec_receive_frame(ic->streams[pkt->stream_index]->codec, yuv);
+	re = avcodec_receive_frame(ic->streams[pkt->stream_index]->codec, frame);
 	if (re != 0)
 	{
 		mutex.unlock();
 		return NULL;
 	}
 	mutex.unlock();
-	pts = (yuv->pts *r2d(ic->streams[pkt->stream_index]->time_base))*1000;// 获取当前播放的位置
-	return yuv;
+	int p = (frame->pts *r2d(ic->streams[pkt->stream_index]->time_base))*1000;// 获取当前播放的位置
+	if (pkt->stream_index == audioStream)
+	{
+		this->pts = p;
+	}
+
+	return p;
 
 }
 
@@ -210,4 +257,47 @@ XFFmpeg::XFFmpeg()
 
 XFFmpeg::~XFFmpeg()
 {
+}
+
+
+int  XFFmpeg::ToPCM(char *out)
+{
+	mutex.lock();
+	if (!ic || !pcm || !out)
+	{
+		mutex.unlock();
+		return 0;
+	}
+
+	AVCodecContext *ctx = ic->streams[audioStream]->codec;
+	if (aCtx == NULL)
+	{
+		aCtx = swr_alloc();
+		swr_alloc_set_opts(aCtx, ctx->channel_layout,
+			AV_SAMPLE_FMT_S16,
+			ctx->sample_rate, ctx->channels, 
+			ctx->sample_fmt,
+			ctx->sample_rate,
+			0, 0
+		);
+		swr_init(aCtx);
+	}
+
+	uint8_t *data[1];
+	data[0] = (uint8_t *)out;
+	int len = swr_convert(aCtx, data, 10000,
+		(const uint8_t **)pcm->data,
+		pcm->nb_samples
+	);
+	if (len <= 0)
+	{
+		mutex.unlock();
+		return 0;
+	}
+	int outsize = av_samples_get_buffer_size(NULL, ctx->channels, 
+		pcm->nb_samples, AV_SAMPLE_FMT_S16, 0
+	);
+
+	mutex.unlock();
+	return outsize;
 }

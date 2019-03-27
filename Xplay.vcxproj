@@ -117,6 +117,7 @@
     <ClCompile Include="VideoWidget.cpp" />
     <ClCompile Include="XFFmpeg.cpp" />
     <ClCompile Include="xplay.cpp" />
+    <ClCompile Include="XSlider.cpp" />
     <ClCompile Include="XVideoThread.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +133,10 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="VideoWidget.h" />
     <ClInclude Include="XFFmpeg.h" />
+    <QtMoc Include="XSlider.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtWidgets;.\..\..\include</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
     <ClInclude Include="XVideoThread.h" />
   </ItemGroup>
   <ItemGroup>

@@ -45,9 +45,15 @@
     <ClCompile Include="XVideoThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XSlider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="xplay.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="XSlider.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

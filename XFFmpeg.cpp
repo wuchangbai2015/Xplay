@@ -138,7 +138,7 @@ bool XFFmpeg::Seek(float pos) // 拖动进度条
 	}
 	int64_t stamp = 0;
 	// streams 存放的视频流  videoStream 存放的视频流的索引 
-	stamp = pos * ic->streams[videoStream]->duration;
+	stamp = pos * ic->streams[videoStream]->duration; 
 	int re = av_seek_frame(ic, videoStream, stamp, AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME);
 	avcodec_flush_buffers(ic->streams[videoStream]->codec);
 

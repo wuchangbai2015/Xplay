@@ -121,7 +121,7 @@ font: 14pt &quot;黑体&quot;;</string>
     <string>/</string>
    </property>
   </widget>
-  <widget class="QSlider" name="playSlider">
+  <widget class="XSlider" name="playSlider">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -150,6 +150,11 @@ font: 14pt &quot;黑体&quot;;</string>
    <class>VideoWidget</class>
    <extends>QOpenGLWidget</extends>
    <header>videowidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XSlider</class>
+   <extends>QSlider</extends>
+   <header>xslider.h</header>
   </customwidget>
  </customwidgets>
  <resources>

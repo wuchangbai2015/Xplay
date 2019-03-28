@@ -2,6 +2,8 @@
 #include <QFileDialog>
 #include "XFFmpeg.h"
 #include <QMessageBox>
+#include "XAudioPlay.h"
+
 //#include <iostream>
 //using namespace std;
 
@@ -16,12 +18,18 @@ Xplay::Xplay(QWidget *parent)
 {
 	ui.setupUi(this);
 	startTimer(40);
+	openFile("video.mp4");
 }
 
-void Xplay::open()
+void Xplay::open() 
 {
 	// 打开文件找到视频
 	QString name = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("选择视频文件")); 
+	openFile(name);
+}
+
+void Xplay::openFile(QString name)
+{
 	if (name.isEmpty())
 	{
 		return;
@@ -33,9 +41,15 @@ void Xplay::open()
 		QMessageBox::information(this, "err", "file open failed!");
 		return;
 	}
+	// 打开视频后我们启动音频播放器
+	XAudioPlay::Get()->sampleRate = XFFmpeg::Get()->sampleRate;
+	XAudioPlay::Get()->channelCount = XFFmpeg::Get()->channelCount;
+	XAudioPlay::Get()->sampleSize = 16;
+	XAudioPlay::Get()->Start();
+
 
 	// 显示总时间
-	char buf[1024] = {0};
+	char buf[1024] = { 0 };
 	int min = (totalMs / 1000) / 60;
 	int sec = (totalMs / 1000) % 60;
 	sprintf(buf, "%03d:%02d", min, sec);
@@ -44,8 +58,6 @@ void Xplay::open()
 	XFFmpeg::Get()->totalMs = totalMs;
 	isPlay = false;
 	play();
-
-
 }
 
 void Xplay::timerEvent(QTimerEvent *e)
@@ -122,6 +134,8 @@ void Xplay::resizeEvent(QResizeEvent *e)
 
 
 }
+
+
 
 
 

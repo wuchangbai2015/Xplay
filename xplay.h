@@ -14,6 +14,8 @@ public:
 	// 重构控制窗口大小的函数
 	void resizeEvent(QResizeEvent *e);
 
+	void openFile(QString name);
+
 
 
 public slots:

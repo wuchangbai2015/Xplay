@@ -18,7 +18,7 @@ public:
 		QAudioFormat fmt;  // 输出的格式
 		// 有48000个样本 每个样本是16位的  有2个这样的样本
 		fmt.setSampleRate(48000);     // 1s钟采集了48000个音频 理论上越高越好
-		fmt.setSampleRate(16);        // 16位即65535
+		fmt.setSampleSize(16);        // 16位即65535
 		fmt.setChannelCount(2);       // 声道   双声道
 		fmt.setCodec("audio/pcm");    // 格式   固定
 		fmt.setByteOrder(QAudioFormat::LittleEndian);    // 数据的小结尾    数据的次序  默认

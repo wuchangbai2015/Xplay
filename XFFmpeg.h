@@ -30,6 +30,8 @@ public:
 	int pts = 0; // 获取当前的播放时间
 	AVPacket Read();// 读取视频
 
+	int GetPts(const AVPacket *pkt);
+
 	// return pts
 	int Decode(const AVPacket *pkt);
 	bool ToRGB(char *out, int outwidth, int outheight); // 视频

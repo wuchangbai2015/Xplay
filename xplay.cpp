@@ -38,7 +38,7 @@ void Xplay::openFile(QString name)
 	int totalMs = XFFmpeg::Get()->Open(name.toLocal8Bit());
 	if (totalMs <= 0)
 	{
-		QMessageBox::information(this, "err", "file open failed!");
+		QMessageBox::information(this, "err", "file open failed!");   
 		return;
 	}
 	// 打开视频后我们启动音频播放器

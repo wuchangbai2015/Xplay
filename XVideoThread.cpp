@@ -1,10 +1,14 @@
 #include "XVideoThread.h"
 #include "XFFmpeg.h"
-
 #include "XAudioPlay.h"
-
 bool isexit = false;
 
+// 视频缓存下来 音频直接播放
+// 用视频去判断 要是和音频是同步的 就去播放
+#include <list>
+using namespace std;
+static list<AVPacket> videos;
+static int apts = -1;
 
 XVideoThread::XVideoThread()
 {
@@ -20,6 +24,20 @@ void XVideoThread::run()
 		{
 			msleep(10);
 			continue;
+		}
+		while (videos.size() > 0)// 同步播放视频
+		{
+			
+			AVPacket pack = videos.front();
+			int pts = XFFmpeg::Get()->GetPts(&pack);
+			if (pts > apts)
+			{
+				break;
+			}
+			XFFmpeg::Get()->Decode(&pack);
+			av_packet_unref(&pack);
+			videos.pop_front();
+
 		}
 
 		int free = XAudioPlay::Get()->GetFree();// 音频的缓冲区还有多少内存可以写
@@ -39,7 +57,7 @@ void XVideoThread::run()
 
 		if (pkt.stream_index == XFFmpeg::Get()->audioStream)
 		{
-			XFFmpeg::Get()->Decode(&pkt);
+			apts = XFFmpeg::Get()->Decode(&pkt);
 			av_packet_unref(&pkt);
 			int len = XFFmpeg::Get()->ToPCM(out); // 重采样
 			XAudioPlay::Get()->Write(out, len);
@@ -54,8 +72,11 @@ void XVideoThread::run()
 		}
 		
 
-		XFFmpeg::Get()->Decode(&pkt);
-		av_packet_unref(&pkt);
+		//XFFmpeg::Get()->Decode(&pkt);
+		//av_packet_unref(&pkt);
+		videos.push_back(pkt);
+
+
 		//if (XFFmpeg::Get()->fps > 0)
 		//{
 		//	msleep(1000 / XFFmpeg::Get()->fps);
